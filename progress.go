@@ -1,30 +1,43 @@
-package nodos
+package animation
 
 import (
 	"fmt"
+	"io"
+	"os"
+	"strings"
 	"time"
 )
 
-var clockmark = []rune{'-', '\u2216', '|', '/'}
+type Animation struct {
+	Frame []string
+	Width int
+}
 
-func Progress() func() {
+func (this Animation) Progress(out io.Writer) func() {
 	done := make(chan struct{})
-	fmt.Print(" /\b")
 	go func() {
+		backspace := strings.Repeat("\b", this.Width)
+		erase := strings.Repeat(" ", this.Width)
+
+		fmt.Fprint(out, this.Frame[0])
+
 		ticker := time.NewTicker(time.Second / 2)
-		i := 0
+		i := 1
 		for {
 			select {
 			case <-done:
 				ticker.Stop()
 				close(done)
-				fmt.Print(" \b\b")
+				fmt.Fprint(out, backspace)
+				fmt.Fprint(out, erase)
+				fmt.Fprint(out, backspace)
 				return
 			case <-ticker.C:
-				if i >= len(clockmark) {
+				if i >= len(this.Frame) {
 					i = 0
 				}
-				fmt.Printf("%c\b", clockmark[i])
+				fmt.Fprint(out, backspace)
+				fmt.Fprint(out, this.Frame[i])
 				i++
 			}
 		}
@@ -33,4 +46,11 @@ func Progress() func() {
 	return func() {
 		done <- struct{}{}
 	}
+}
+
+func Progress() func() {
+	return Animation{
+		Frame: []string{" /", " -", " \u2216", " |"},
+		Width: 2,
+	}.Progress(os.Stdout)
 }
