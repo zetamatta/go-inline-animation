@@ -1,3 +1,4 @@
+//go:build run
 // +build run
 
 package main
@@ -6,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/zetamatta/go-inline-animation"
+	"github.com/nyaosorg/go-inline-animation"
 )
 
 func main() {

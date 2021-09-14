@@ -1,7 +1,7 @@
 go-inline-animation
 ===================
 
-<img src="./demo.gif" />
+![image](./demo.gif)
 
 example:
 
@@ -14,7 +14,7 @@ import (
     "fmt"
     "time"
 
-    "github.com/zetamatta/go-inline-animation"
+    "github.com/nyaosorg/go-inline-animation"
 )
 
 func main() {
@@ -38,7 +38,7 @@ import (
     "os"
     "time"
 
-    "github.com/zetamatta/go-inline-animation"
+    "github.com/nyaosorg/go-inline-animation"
 )
 
 func main() {
